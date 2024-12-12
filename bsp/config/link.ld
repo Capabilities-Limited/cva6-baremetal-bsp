@@ -12,7 +12,7 @@
 /* Additional contributions by:
            Sebastien Jacq - sjthales on github.com
 
-   Description: linkerscript for the CV32A6 platform
+   Description: linkerscript for the CV64A6 platform
 
    =========================================================================== 
    Revisions  :
@@ -20,8 +20,10 @@
    2020-10-06  0.1      S.Jacq       modification of the Test for CV32A6 softcore
    =========================================================================== */
 
-OUTPUT_FORMAT("elf32-littleriscv", "elf32-littleriscv",
-	      "elf32-littleriscv")
+// Modifications to support PlatformIO Copyright Capabilities Limited 2024
+
+OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
+	      "elf64-littleriscv")
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
 
