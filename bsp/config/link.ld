@@ -20,7 +20,7 @@
    2020-10-06  0.1      S.Jacq       modification of the Test for CV32A6 softcore
    =========================================================================== */
 
-// Modifications to support PlatformIO Copyright Capabilities Limited 2024
+/* Modifications to support PlatformIO Copyright Capabilities Limited 2024 */
 
 OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
 	      "elf64-littleriscv")
