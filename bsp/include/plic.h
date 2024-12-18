@@ -1,6 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2020 Thales.
  * Copyright 2019-2020 Microchip FPGA Embedded Systems Solutions.
+ * Copyright 2024 Capabilities Limited
  *
  * SPDX-License-Identifier: MIT
  *
@@ -23,6 +24,7 @@
 // Revisions  :
 // Date        Version  Author       Description
 // 2020-10-06  0.1      S.Jacq       modification of the Test for CVA6 softcore
+// 2024-12-18  0.1      Peter Rugg   build without warnings in PlatformIO
 // =========================================================================== //
 
 #ifndef MSS_PLIC_H
@@ -40,7 +42,7 @@
 #define EXT_IRQ_KEEP_ENABLED                                0U
 #define EXT_IRQ_DISABLE                                     1U
 
-
+#define UNUSED(x) (void)(x)
 
 /***************************************************************************//**
  * PLIC source Interrupt numbers:
@@ -160,6 +162,7 @@ static inline void PLIC_init(void)
 {
     uint32_t inc;
     uint64_t hart_id  = read_csr(mhartid);
+    UNUSED(hart_id);
 
     /* Disable all interrupts for the current hart. */
     for(inc = 0UL; inc < PLIC_SET_UP_REGISTERS; inc++)
@@ -318,6 +321,7 @@ static inline void PLIC_ClearPendingIRQ(void)
     while ( int_num != NoInterrupt_IRQHandler)
     {
         uint8_t disable = EXT_IRQ_KEEP_ENABLED;
+        UNUSED(disable);
 
         PLIC_CompleteIRQ(int_num);
         wait_possible_int = 0xFU;
@@ -360,6 +364,7 @@ static inline void PLIC_init_on_reset(void)
     PLIC_ClearPendingIRQ();
 }
 
+#undef UNUSED
 
 #endif  /* MSS_PLIC_H */
 

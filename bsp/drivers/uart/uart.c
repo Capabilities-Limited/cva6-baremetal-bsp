@@ -1,6 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2020 Thales.
  * Copyright 2019-2020 Microchip FPGA Embedded Systems Solutions.
+ * Copyright 2024 Capabilities Limited
  *
  * SPDX-License-Identifier: MIT
  *
@@ -14,6 +15,7 @@
 // Revisions  :
 // Date        Version  Author       Description
 // 2020-10-06  0.1      S.Jacq       modification of the Test for CVA6 softcore
+// 2024-12-18  0.1      Peter Rugg   Build without warnings for PlatformIO
 // =========================================================================== //
 
 
@@ -22,6 +24,20 @@
 
 #include "plic.h"
 #include "fpga_platform_config.h"
+
+/******************************************************************************
+ * Static function definitions
+ */
+
+static void default_tx_handler(uart_instance_t * this_uart);
+static void enable_irq(const uart_instance_t * this_uart);
+static void disable_irq(const uart_instance_t * this_uart);
+
+static void config_baud_divisors
+(
+    uart_instance_t * this_uart,
+    uint32_t baudrate
+);
 
 
 /*******************************************************************************
@@ -40,6 +56,8 @@
 
 #define UART_DATA_READY             ((uint8_t) 0x01)
 
+#define UNUSED(x) (void)(x)
+
 
 /*******************************************************************************
  * Possible values for Interrupt Identification Register Field.
@@ -52,7 +70,7 @@
 #define IIRF_DATA_TIMEOUT               0x0Cu
 
 
-uart_instance_t g_uart_0 = { .hw_reg = FPGA_UART_0_BASE };
+uart_instance_t g_uart_0 = { .hw_reg = (UART_TypeDef *)FPGA_UART_0_BASE };
 
 /*******************************************************************************
  * Global initialization for all modes
@@ -212,6 +230,7 @@ UART_polled_tx_string
     uint8_t data_byte;
     volatile uint8_t status;
 
+    UNUSED(fill_size);
     //ASSERT(p_sz_string != ((uint8_t*)0));
 
     if (p_sz_string != ((uint8_t*)0))
@@ -669,6 +688,7 @@ config_baud_divisors
  * transmit data.
  */
 static void
+__attribute__((unused))
 uart_isr
 (
     uart_instance_t * this_uart
@@ -812,6 +832,7 @@ enable_irq
 }
 
 static void
+__attribute__((unused))
 disable_irq
 (
     const uart_instance_t * this_uart
@@ -832,3 +853,4 @@ disable_irq
     PLIC_DisableIRQ(plic_num);
 }
 
+#undef UNUSED
